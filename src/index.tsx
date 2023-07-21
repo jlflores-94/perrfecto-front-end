@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/Login/LoginPage';
 import FeedPage from './pages/Feed/FeedPage';
+import ProfilePage from './pages/Profile/ProfilePage';
 import './index.css';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
@@ -17,6 +18,7 @@ ReactDOM.render(
         <Routes>
           <Route element={<PrivateRoute />}> 
             <Route path="/feed" element={<FeedPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
 
           <Route element={<InitialRoute />}> 

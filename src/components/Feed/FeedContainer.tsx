@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/feed.css';
+import { API_URL, URL } from '../../config';
 import { Card, Avatar, CardContent, Typography, CardMedia, Grid } from '@mui/material';
 
 const formatDate = (date: Date) => {
@@ -27,7 +28,7 @@ interface User {
 interface Post {
   id: number;
   createdAt: string;
-  mult: string[];
+  mult: any;
   description: string;
   isLiked: boolean;
   likesCount: number;
@@ -46,7 +47,7 @@ const FeedContainer: React.FC = () => {
   const [feedData, setFeedData] = useState<Post[]>([]);
   
   useEffect(() => {
-    axios.get('https://api-perrfecto.alaxatechtesting.lat/api/feed/all')
+    axios.get(API_URL+'/feed/all')
       .then((response) => {
         if (response.data.ok) {
           setFeedData(response.data.data);
@@ -57,6 +58,27 @@ const FeedContainer: React.FC = () => {
       });
   }, []);
 
+  const urlImage =  (str: string)  => {
+    const stringParse = JSON.parse(str);
+
+    if(stringParse && stringParse.length > 0){
+        const urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
+        const isURLValid = urlPattern.test(stringParse[0]);
+        return isURLValid ? stringParse[0] : URL + stringParse[0];
+    }
+
+    return null;
+  };
+
+  const imageMult = (value: any) => {
+    if(Array.isArray(value)){
+      return URL + value[0];
+    } 
+    
+    return URL + value;
+  }
+
+
   return (
     <div>
         {feedData.map((post) => (
@@ -65,7 +87,7 @@ const FeedContainer: React.FC = () => {
                     <CardContent>
                       <Grid container>
                         <Grid item xs={1}>
-                          <Avatar alt="Profile" src={post.user.img_profile} />
+                          <Avatar alt="Profile" src={ urlImage(post.user.img_profile)} />
                         </Grid>
                         <Grid item xs={11}>
                           <Typography variant="h6" gutterBottom>
@@ -74,18 +96,17 @@ const FeedContainer: React.FC = () => {
                           <Typography  component="div" sx={{fontSize:'0.7rem'}} variant="subtitle1" gutterBottom>
                           <React.Fragment>
                           {formatDate(new Date(post.createdAt))}  <span style={{ margin: '0 8px', fontSize: '1.2rem' }}>·</span> <span style={{ fontSize: '1.2rem', color:'#64dd17' }}>{postType(post.type)}</span>
-
                           </React.Fragment>
                           </Typography>
                         </Grid>
                       </Grid>
                       <Typography variant="body1">
-                        {post.description}
+                        {post.description }
                       </Typography>
                       <CardMedia
                         component="img"
                         height="200"
-                        image={post.mult[0]}
+                        image={imageMult(post.mult)}
                         alt="Post Image"
                       />
                     </CardContent>

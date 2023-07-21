@@ -4,6 +4,7 @@ import { Typography, CardContent, Button, TextField, Link} from '@mui/material';
 import { styled } from '@mui/system';
 import '../Styles/login.css';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../../config';
 
 interface LoginFormProps {
   onSubmit: (email: string, password: string) => void;
@@ -22,7 +23,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await axios.post('https://api-perrfecto.alaxatechtesting.lat/api/auth', {
+      const response = await axios.post(API_URL+'/auth', {
         email,
         password
       }, 

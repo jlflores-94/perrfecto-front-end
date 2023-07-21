@@ -1,9 +1,9 @@
-import React from 'react';
-import FeedContainer from './FeedContainer';
+import React, { Suspense } from 'react';
 import Navbar from '../Layouts/NavbarLayout';
 import Drawer from '../Layouts/DrawerLayout';
 import { Grid } from '@mui/material';
 
+const FeedContainerLazy = React.lazy(() => import('./FeedContainer'));
 const Feed: React.FC = () => {
   return (
     <div>
@@ -16,7 +16,9 @@ const Feed: React.FC = () => {
                     <Navbar/>
                 </Grid>
                 <Grid item xs={12}>
-                    <FeedContainer />       
+                <Suspense fallback={<div>Cargando</div>}>
+                    <FeedContainerLazy />
+                </Suspense>     
                 </Grid>
             </Grid>
         </Grid>
