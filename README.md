@@ -1,3 +1,5 @@
+## Dependencias requeridas para 
+1. Tener una version Node => v14.19.3
 ## Pasos para descargar el repositorio por medio de terminal de comandos:
 
 1. Clonar el repositorio:
